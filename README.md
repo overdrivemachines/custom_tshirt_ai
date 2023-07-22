@@ -15,3 +15,6 @@ Some of the packages used:
 - valtio - manage react state
 - react-color - color picker
 - framer-motion - animation
+
+## Run the project
+$ npm run dev
