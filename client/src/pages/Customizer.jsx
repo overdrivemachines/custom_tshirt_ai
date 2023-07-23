@@ -66,10 +66,18 @@ const Customizer = () => {
         state.isFullTexture = !activeFilterTab[tabName];
         break;
       default:
-        state.isFullTexture = false;
         state.isLogoTexture = true;
+        state.isFullTexture = false;
         break;
     }
+
+    // After setting the state, we need to update the active tab
+    setActiveFilterTab((prevState) => {
+      return {
+        ...prevState,
+        [tabName]: !prevState[tabName],
+      };
+    });
   };
 
   // Get File data
@@ -106,7 +114,7 @@ const Customizer = () => {
           {/* Filter/Toggles (bottom) */}
           <motion.div className="filtertabs-container" {...slideAnimation("up")}>
             {FilterTabs.map((tab) => (
-              <Tab key={tab.name} tab={tab} isFilterTab isActiveTab="" handleClick={() => {}}></Tab>
+              <Tab key={tab.name} tab={tab} isFilterTab isActiveTab={activeFilterTab[tab.name]} handleClick={() => handleActiveFilterTab(tab.name)}></Tab>
             ))}
           </motion.div>
         </>
