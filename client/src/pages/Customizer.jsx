@@ -35,12 +35,51 @@ const Customizer = () => {
       case "colorpicker":
         return <ColorPicker />;
       case "filepicker":
-        return <FilePicker />;
+        return <FilePicker file={file} setFile={setFile} readFile={readFile} />;
       case "aipicker":
         return <AIPicker />;
       default:
         return null;
     }
+  };
+
+  // Update shirt
+  // type: logo or full texture
+  const handleDecals = (type, result) => {
+    // DecalTypes is defined in constants.js. It retuns an object like
+    // { stateProperty: "logoDecal", filterTab: "logoShirt" }
+    const decalType = DecalTypes[type];
+    // updating state.logoDecal or state.fullDecal to the file
+    state[decalType.stateProperty] = result;
+
+    if (!activeFilterTab[decalType.filterTab]) {
+      handleActiveFilterTab(decalType.filterTab);
+    }
+  };
+
+  const handleActiveFilterTab = (tabName) => {
+    switch (tabName) {
+      case "logoShirt":
+        state.isLogoTexture = !activeEditorTab[tabName];
+        break;
+      case "stylishShirt":
+        state.isFullTexture = !activeFilterTab[tabName];
+        break;
+      default:
+        state.isFullTexture = false;
+        state.isLogoTexture = true;
+        break;
+    }
+  };
+
+  // Get File data
+  // type can be logo or full texture
+  const readFile = (type) => {
+    // file is from the state
+    reader(file).then((result) => {
+      handleDecals(type, result);
+      setActiveEditorTab(""); // reset active tab
+    });
   };
 
   return (
